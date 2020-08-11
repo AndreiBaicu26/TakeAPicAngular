@@ -1,0 +1,20 @@
+.video-container {
+  background-color: black;
+  width: 300px;
+  height: 300px;
+  margin-right: auto;
+  display: inline-block;
+  z-index: 1;
+  position: relative;
+}
+.container {
+  text-align: center;
+}
+
+.rectangle {
+  border: 1px solid green;
+  position: absolute;
+  z-index: 2;
+  top: 10px;
+  left: 10px;
+}

@@ -1,0 +1,17 @@
+<div class="container">
+  <div class="video-container">
+    <video #videoElement width="300" height="300" autoplay playsinline>
+      This browser does not support video
+    </video>
+    <div
+      class="rectangle"
+      #rectangle
+      [ngStyle]="{
+        top: rectangleDimensions.top + 'px',
+        left: rectangleDimensions.left + 'px',
+        height: rectangleDimensions.height + 'px',
+        width: rectangleDimensions.width + 'px'
+      }"
+    ></div>
+  </div>
+</div>
