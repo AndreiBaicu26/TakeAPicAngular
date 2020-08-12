@@ -8,8 +8,8 @@ interface RectangleDimensions {
   left;
 }
 interface RelativeCoords {
-  x: number;
-  y: number;
+  left: number;
+  top: number;
   width: number;
   height: number;
 }
@@ -26,22 +26,37 @@ export class TakePhotoService {
     this.video.next(2);
   }
 
-  convertToPhoto(video: HTMLVideoElement, rectangleDimensions: RelativeCoords) {
+  convertToPhoto(video: HTMLVideoElement, rectangleDimensions: RelativeCoords, ratio:number) {
     const canvas = document.createElement('canvas');
+
+    console.log(video, rectangleDimensions);
+    const topDimension = this.getTopDimensions(video, rectangleDimensions);
+    const percentageLeft = (rectangleDimensions.left / video.offsetWidth) * 100;
+    const percentageWidth = (rectangleDimensions.width / video.offsetWidth) * 100;
+
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
 
-    console.log(rectangleDimensions);
-    console.log(canvas.width, canvas.height);
+    const resultLeftPosition = (percentageLeft / 100) * canvas.width;
+    const resultWidth = (percentageWidth / 100) * canvas.width;
+    const resultHeight = resultWidth/ratio;
 
+    console.log(
+      resultLeftPosition,
+      topDimension,
+      resultHeight,
+      resultWidth,
+      canvas.height,
+      canvas.width
+    );
     canvas
       .getContext('2d')
       .drawImage(
         video,
-        rectangleDimensions.x,
-        rectangleDimensions.y,
-        600,
-        600,
+        resultLeftPosition,
+        topDimension,
+        resultWidth,
+        resultHeight,
         0,
         0,
         canvas.width,
@@ -57,4 +72,15 @@ export class TakePhotoService {
 
     this.canvas.next(imageData);
   }
+
+  getTopDimensions(video: HTMLVideoElement,rectangleDimensions: RelativeCoords
+  ): number {
+    const actualVideoHeight =(video.videoHeight * video.height) / video.videoWidth;
+    const topLength = (video.height - actualVideoHeight) / 2;
+    const diffBetweenTopRectangleAndTopVideo = rectangleDimensions.top - topLength;
+
+    return diffBetweenTopRectangleAndTopVideo;
+  }
+
+  
 }

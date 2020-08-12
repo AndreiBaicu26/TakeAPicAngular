@@ -18,6 +18,7 @@ export class StartCameraService {
      
       if (shouldOpenCamera) {
         const stream = await this.openMediaDevices({ video: true });
+        console.log(stream);
         this.mediaStream.next(stream);
         this.cameraStarted=true;
       } else {

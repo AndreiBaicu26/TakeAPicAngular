@@ -26,6 +26,7 @@ export class ImageHolderComponent implements OnInit {
 
       this.height = imageData.height;
       this.width = imageData.width;
+
       img.src = imageData.imageStream;
       this.download(imageData.imageStream);
     });
