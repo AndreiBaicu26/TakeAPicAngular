@@ -20,3 +20,13 @@
 button {
   margin-right: 10px;
 }
+
+.peer-camera {
+  border: 1px solid red;
+  position: absolute;
+  z-index: 3;
+  top: 5px;
+  width: 30%;
+  height: 30%;
+  right: 2px;
+}

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { TakePhotoService } from '../take-photo.service';
-import { StartCameraService } from '../start-camera.service';
+import { TakePhotoService } from '../../services/take-photo.service';
+import { StartCameraService } from '../../services/start-camera.service';
 @Component({
   selector: 'app-btn-take-photo',
   templateUrl: './btn-take-photo.component.html',

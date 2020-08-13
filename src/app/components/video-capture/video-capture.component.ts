@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { StartCameraService } from '../start-camera.service';
-import { TakePhotoService } from '../take-photo.service';
+import { StartCameraService } from '../../services/start-camera.service';
+import { TakePhotoService } from '../../services/take-photo.service';
+import { SetUpOpenTalkService } from '../../services/set-up-open-talk.service';
 
 interface RectangleDimensions {
   width;
@@ -25,6 +26,7 @@ interface RelativeCoords {
 export class VideoCaptureComponent implements OnInit {
   @ViewChild('videoElement') video: ElementRef;
   @ViewChild('rectangle') rectangle: ElementRef;
+  @ViewChild('publisher') publisher: ElementRef;
 
   rectangleDimensions: RectangleDimensions = {
     width: 400,
@@ -36,22 +38,40 @@ export class VideoCaptureComponent implements OnInit {
 
   constructor(
     private videoStream: StartCameraService,
-    private takePhotoService: TakePhotoService
+    private takePhotoService: TakePhotoService,
+    private openTalk: SetUpOpenTalkService
   ) {}
 
   ngOnInit(): void {}
 
   ngAfterViewInit() {
+    //media stream subscription
     this.videoStream.mediaStream.subscribe((mediaStream) => {
       if (this.video.nativeElement.srcObject !== null && mediaStream == null) {
         this.video.nativeElement.srcObject.getTracks().forEach((track) => {
           track.stop();
         });
       }
-      this.video.nativeElement.srcObject = mediaStream;
+      //this.video.nativeElement.srcObject = mediaStream;
+
+      //open talk subscription
+      this.openTalk.publisherObs.subscribe(() => {
+        const publisher = this.openTalk.getOT().initPublisher(
+          this.publisher.nativeElement,
+          {
+            insertMode: 'append',
+            width: '100%',
+            height: '100%',
+          },
+          (err) => this.openTalk.handleError(err)
+        );
+        this.openTalk.connect(publisher);
+      });
     });
+
     this.setRectangleDimensions();
 
+    //take photo subscription
     this.takePhotoService.video.subscribe(() => {
       //this.setRectangleDimensions();
       this.takePhotoService.convertToPhoto(
@@ -96,23 +116,31 @@ export class VideoCaptureComponent implements OnInit {
   }
 
   incrementTop() {
-    console.log(this.video.nativeElement.getBoundingClientRect())
+    console.log(this.video.nativeElement.getBoundingClientRect());
     this.rectangleDimensions.height++;
     this.rectangleDimensions.top--;
   }
+
   incrementBottom() {
     this.rectangleDimensions.height++;
   }
+
   incrementLeft() {
-    
-    if (this.rectangle.nativeElement.getBoundingClientRect().left > this.video.nativeElement.getBoundingClientRect().left) {
+    if (
+      this.rectangle.nativeElement.getBoundingClientRect().left >
+      this.video.nativeElement.getBoundingClientRect().left
+    ) {
       this.rectangleDimensions.left--;
       this.rectangleDimensions.width++;
     }
   }
+
   incrementRight() {
-    if (this.rectangle.nativeElement.getBoundingClientRect().right < this.video.nativeElement.getBoundingClientRect().right) {
-    this.rectangleDimensions.width++;
+    if (
+      this.rectangle.nativeElement.getBoundingClientRect().right <
+      this.video.nativeElement.getBoundingClientRect().right
+    ) {
+      this.rectangleDimensions.width++;
     }
   }
 }

@@ -5,24 +5,22 @@ import { BehaviorSubject, Observable, of } from 'rxjs';
   providedIn: 'root',
 })
 export class StartCameraService {
+  
   mediaStream = new BehaviorSubject(null);
   constructor() {}
- cameraStarted:boolean = false;
- 
+  cameraStarted: boolean = false;
+
   openMediaDevices = async (constraints) => {
     return await navigator.mediaDevices.getUserMedia(constraints);
   };
 
   startCamera = async (shouldOpenCamera: boolean) => {
     try {
-     
       if (shouldOpenCamera) {
         const stream = await this.openMediaDevices({ video: true });
-        console.log(stream);
         this.mediaStream.next(stream);
-        this.cameraStarted=true;
+        this.cameraStarted = true;
       } else {
-        
         this.mediaStream.next(null);
         this.cameraStarted = false;
       }

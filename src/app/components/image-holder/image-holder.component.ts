@@ -1,5 +1,5 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
-import { TakePhotoService } from '../take-photo.service';
+import { TakePhotoService } from '../../services/take-photo.service';
 
 @Component({
   selector: 'app-image-holder',
@@ -26,7 +26,6 @@ export class ImageHolderComponent implements OnInit {
 
       this.height = imageData.height;
       this.width = imageData.width;
-
       img.src = imageData.imageStream;
       this.download(imageData.imageStream);
     });

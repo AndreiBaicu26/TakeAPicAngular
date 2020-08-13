@@ -1,8 +1,9 @@
 <div class="container">
-  <div class="video-container">
+  <div class="video-container" #subscriber>
     <video #videoElement width="300" height="300" autoplay playsinline>
       This browser does not support video
     </video>
+
     <div
       class="rectangle"
       #rectangle
@@ -13,6 +14,8 @@
         width: rectangleDimensions.width + 'px'
       }"
     ></div>
+    <div class="peer-camera" #publisher></div>
+    <app-subscriber [videoElem]="video"></app-subscriber>
   </div>
 </div>
 

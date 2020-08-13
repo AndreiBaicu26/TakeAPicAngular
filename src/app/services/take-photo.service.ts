@@ -41,14 +41,7 @@ export class TakePhotoService {
     const resultWidth = (percentageWidth / 100) * canvas.width;
     const resultHeight = resultWidth/ratio;
 
-    console.log(
-      resultLeftPosition,
-      topDimension,
-      resultHeight,
-      resultWidth,
-      canvas.height,
-      canvas.width
-    );
+    
     canvas
       .getContext('2d')
       .drawImage(
