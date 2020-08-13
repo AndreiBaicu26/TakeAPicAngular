@@ -17,10 +17,6 @@
   z-index: 2;
 }
 
-button {
-  margin-right: 10px;
-}
-
 .peer-camera {
   border: 1px solid red;
   position: absolute;

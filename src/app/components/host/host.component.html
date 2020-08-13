@@ -1,1 +1,13 @@
-<p>host works!</p>
+<div>
+  <app-video-capture [receivedIncrementSquareData]="incrementGreenSquare">
+  </app-video-capture>
+
+  <app-incremental-buttons
+    (increment)="incrementGreenSquare = $event"
+  ></app-incremental-buttons>
+
+  <div class="btn-container">
+    <app-btn-start-camera></app-btn-start-camera>
+    <app-btn-take-photo></app-btn-take-photo>
+  </div>
+</div>

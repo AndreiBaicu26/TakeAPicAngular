@@ -8,12 +8,14 @@ import { BtnTakePhotoComponent } from './components/btn-take-photo/btn-take-phot
 import { ImageHolderComponent } from './components/image-holder/image-holder.component';
 import { SubscriberComponent } from './components/subscriber/subscriber.component';
 import { HostComponent } from './components/host/host.component';
-import { GreenSquareComponent } from './components/green-square/green-square.component';
 import { IncrementalButtonsComponent } from './components/incremental-buttons/incremental-buttons.component';
+import { GuestComponent } from './components/guest/guest.component';
 
-const routes: Routes =[
-  {path: 'moderator', component:}
-]
+const routes: Routes = [
+  { path: 'host', component: HostComponent },
+  { path: 'guest', component: GuestComponent },
+  { path: '', redirectTo: 'host', pathMatch: 'full' },
+];
 
 @NgModule({
   declarations: [
@@ -24,8 +26,8 @@ const routes: Routes =[
     ImageHolderComponent,
     SubscriberComponent,
     HostComponent,
-    GreenSquareComponent,
     IncrementalButtonsComponent,
+    GuestComponent,
   ],
   imports: [BrowserModule, RouterModule.forRoot(routes)],
   providers: [],

@@ -3,13 +3,11 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'app-host',
   templateUrl: './host.component.html',
-  styleUrls: ['./host.component.css']
+  styleUrls: ['./host.component.css'],
 })
 export class HostComponent implements OnInit {
+  constructor() {}
+  incrementGreenSquare: string;
 
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
+  ngOnInit(): void {}
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
 import { StartCameraService } from '../../services/start-camera.service';
 import { TakePhotoService } from '../../services/take-photo.service';
 import { SetUpOpenTalkService } from '../../services/set-up-open-talk.service';
@@ -8,7 +8,6 @@ interface RectangleDimensions {
   height;
   top;
   left;
-  right;
 }
 
 interface RelativeCoords {
@@ -28,12 +27,18 @@ export class VideoCaptureComponent implements OnInit {
   @ViewChild('rectangle') rectangle: ElementRef;
   @ViewChild('publisher') publisher: ElementRef;
 
+  public incrementSquareData: string;
+
+  @Input('receivedIncrementSquareData')
+  public set receivedIncrementSquareData(v: string) {
+    this.incrementGreenSqure(v);
+  }
+
   rectangleDimensions: RectangleDimensions = {
     width: 400,
     height: 400,
     top: 0,
     left: 0,
-    right: 0,
   };
 
   constructor(
@@ -45,6 +50,7 @@ export class VideoCaptureComponent implements OnInit {
   ngOnInit(): void {}
 
   ngAfterViewInit() {
+    setTimeout(() => this.setRectangleDimensions(), 0);
     //media stream subscription
     this.videoStream.mediaStream.subscribe((mediaStream) => {
       if (this.video.nativeElement.srcObject !== null && mediaStream == null) {
@@ -52,7 +58,6 @@ export class VideoCaptureComponent implements OnInit {
           track.stop();
         });
       }
-      //this.video.nativeElement.srcObject = mediaStream;
 
       //open talk subscription
       this.openTalk.publisherObs.subscribe(() => {
@@ -69,11 +74,8 @@ export class VideoCaptureComponent implements OnInit {
       });
     });
 
-    this.setRectangleDimensions();
-
     //take photo subscription
     this.takePhotoService.video.subscribe(() => {
-      //this.setRectangleDimensions();
       this.takePhotoService.convertToPhoto(
         this.video.nativeElement,
         this.getCoordinates(),
@@ -84,7 +86,7 @@ export class VideoCaptureComponent implements OnInit {
 
   setRectangleDimensions = () => {
     let videoElem = this.video.nativeElement as HTMLVideoElement;
-
+    console.log('changed');
     this.rectangleDimensions.width = videoElem.width - 100;
     this.rectangleDimensions.height = videoElem.height - 100;
     this.rectangleDimensions.top = 50;
@@ -115,32 +117,40 @@ export class VideoCaptureComponent implements OnInit {
     return ratio;
   }
 
-  incrementTop() {
-    console.log(this.video.nativeElement.getBoundingClientRect());
-    this.rectangleDimensions.height++;
-    this.rectangleDimensions.top--;
-  }
+  incrementGreenSqure(incrementSquareData) {
+    console.log(incrementSquareData);
+    switch (incrementSquareData) {
+      case 'top': {
+        this.rectangleDimensions.height++;
+        this.rectangleDimensions.top--;
+        break;
+      }
 
-  incrementBottom() {
-    this.rectangleDimensions.height++;
-  }
+      case 'height': {
+        this.rectangleDimensions.height++;
+        break;
+      }
 
-  incrementLeft() {
-    if (
-      this.rectangle.nativeElement.getBoundingClientRect().left >
-      this.video.nativeElement.getBoundingClientRect().left
-    ) {
-      this.rectangleDimensions.left--;
-      this.rectangleDimensions.width++;
-    }
-  }
+      case 'left': {
+        if (
+          this.rectangle.nativeElement.getBoundingClientRect().left >
+          this.video.nativeElement.getBoundingClientRect().left
+        ) {
+          this.rectangleDimensions.left--;
+          this.rectangleDimensions.width++;
+        }
+        break;
+      }
 
-  incrementRight() {
-    if (
-      this.rectangle.nativeElement.getBoundingClientRect().right <
-      this.video.nativeElement.getBoundingClientRect().right
-    ) {
-      this.rectangleDimensions.width++;
+      case 'width': {
+        if (
+          this.rectangle.nativeElement.getBoundingClientRect().right <
+          this.video.nativeElement.getBoundingClientRect().right
+        ) {
+          this.rectangleDimensions.width++;
+        }
+        break;
+      }
     }
   }
 }
