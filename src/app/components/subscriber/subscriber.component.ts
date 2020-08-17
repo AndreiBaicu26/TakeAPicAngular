@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
 import { SetUpOpenTalkService } from '../../services/set-up-open-talk.service';
+import { StartCameraService } from '../../services/start-camera.service';
 
 @Component({
   selector: 'app-subscriber',
@@ -9,8 +10,12 @@ import { SetUpOpenTalkService } from '../../services/set-up-open-talk.service';
 export class SubscriberComponent implements OnInit {
   @ViewChild('subscriber') subscriber: ElementRef;
   @Input() videoElem: ElementRef;
-  subscriberObj;
-  constructor(private openTok: SetUpOpenTalkService) {}
+  subscriberObj: any;
+
+  constructor(
+    private openTok: SetUpOpenTalkService,
+    private startCameraService: StartCameraService
+  ) {}
 
   ngOnInit(): void {}
 
@@ -25,13 +30,9 @@ export class SubscriberComponent implements OnInit {
       );
 
       this.subscriberObj.on('videoElementCreated', (event) => {
-        console.log(event);
+        this.startCameraService.cameraStarted = true;
         this.videoElem.nativeElement.srcObject = event.element.srcObject;
       });
-
-      //this.videoElem.nativeElement.srcObject = this.subscriberObj.element.querySelector(
-      // 'video'
-      //).srcObject;
     });
   }
 }

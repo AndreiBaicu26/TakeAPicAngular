@@ -28,8 +28,6 @@ export class TakePhotoService {
 
   convertToPhoto(video: HTMLVideoElement, rectangleDimensions: RelativeCoords, ratio:number) {
     const canvas = document.createElement('canvas');
-
-    console.log(video, rectangleDimensions);
     const topDimension = this.getTopDimensions(video, rectangleDimensions);
     const percentageLeft = (rectangleDimensions.left / video.offsetWidth) * 100;
     const percentageWidth = (rectangleDimensions.width / video.offsetWidth) * 100;
@@ -40,7 +38,6 @@ export class TakePhotoService {
     const resultLeftPosition = (percentageLeft / 100) * canvas.width;
     const resultWidth = (percentageWidth / 100) * canvas.width;
     const resultHeight = resultWidth/ratio;
-
     
     canvas
       .getContext('2d')

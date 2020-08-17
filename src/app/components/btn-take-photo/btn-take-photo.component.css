@@ -1,0 +1,14 @@
+button {
+  background-color: #28d732;
+  color: white;
+  width: 6rem;
+  height: 3rem;
+  border: none;
+  transition: all 0.3s;
+}
+
+button:hover {
+  background-color: #1da700;
+  width: 6.5rem;
+  height: 3.5rem;
+}

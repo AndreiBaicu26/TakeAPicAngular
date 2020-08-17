@@ -1,3 +1,31 @@
-button {
+.start {
+  background-color: #b11c1c;
+  color: white;
+  width: 6rem;
+  height: 3rem;
+  border: none;
   margin-right: 30px;
+  transition: all 0.3s;
+}
+
+button {
+  background-color: #2894d7;
+  color: white;
+  width: 6rem;
+  height: 3rem;
+  border: none;
+  margin-right: 30px;
+  transition: all 0.3s;
+}
+
+button:hover {
+  background-color: #0088a7;
+  width: 6.5rem;
+  height: 3.5rem;
+}
+
+.start:hover {
+  background-color: #8f1616;
+  width: 6.5rem;
+  height: 3.5rem;
 }

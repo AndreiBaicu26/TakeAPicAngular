@@ -1,7 +1,19 @@
 button {
   margin-right: 10px;
+  border: none;
+  background-color: #6ab748;
+  color: white;
+  height: 70%;
+  transition: all 0.3s;
 }
 
 .container-buttons {
   text-align: center;
+  height: 40px;
+}
+
+button:hover {
+  margin-right: 10px;
+  border: none;
+  background-color: #8fc975;
 }

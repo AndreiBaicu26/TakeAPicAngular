@@ -10,6 +10,10 @@ import { SubscriberComponent } from './components/subscriber/subscriber.componen
 import { HostComponent } from './components/host/host.component';
 import { IncrementalButtonsComponent } from './components/incremental-buttons/incremental-buttons.component';
 import { GuestComponent } from './components/guest/guest.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faVideo } from '@fortawesome/free-solid-svg-icons';
+
 
 const routes: Routes = [
   { path: 'host', component: HostComponent },
@@ -29,8 +33,12 @@ const routes: Routes = [
     IncrementalButtonsComponent,
     GuestComponent,
   ],
-  imports: [BrowserModule, RouterModule.forRoot(routes)],
+  imports: [BrowserModule, FontAwesomeModule, RouterModule.forRoot(routes)],
   providers: [],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule {
+  constructor() {
+    library.add(faVideo)
+  }
+}

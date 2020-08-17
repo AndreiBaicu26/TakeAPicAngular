@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
 import { StartCameraService } from '../../services/start-camera.service';
 import { TakePhotoService } from '../../services/take-photo.service';
 import { SetUpOpenTalkService } from '../../services/set-up-open-talk.service';
+import { ModifyGreenRectangleDimensionsService } from '../../services/modify-green-rectangle-dimensions.service';
 
 interface RectangleDimensions {
   width;
@@ -27,13 +28,6 @@ export class VideoCaptureComponent implements OnInit {
   @ViewChild('rectangle') rectangle: ElementRef;
   @ViewChild('publisher') publisher: ElementRef;
 
-  public incrementSquareData: string;
-
-  @Input('receivedIncrementSquareData')
-  public set receivedIncrementSquareData(v: string) {
-    this.incrementGreenSqure(v);
-  }
-
   rectangleDimensions: RectangleDimensions = {
     width: 400,
     height: 400,
@@ -44,7 +38,8 @@ export class VideoCaptureComponent implements OnInit {
   constructor(
     private videoStream: StartCameraService,
     private takePhotoService: TakePhotoService,
-    private openTalk: SetUpOpenTalkService
+    private openTalk: SetUpOpenTalkService,
+    private modifyService: ModifyGreenRectangleDimensionsService
   ) {}
 
   ngOnInit(): void {}
@@ -58,20 +53,20 @@ export class VideoCaptureComponent implements OnInit {
           track.stop();
         });
       }
+    });
 
-      //open talk subscription
-      this.openTalk.publisherObs.subscribe(() => {
-        const publisher = this.openTalk.getOT().initPublisher(
-          this.publisher.nativeElement,
-          {
-            insertMode: 'append',
-            width: '100%',
-            height: '100%',
-          },
-          (err) => this.openTalk.handleError(err)
-        );
-        this.openTalk.connect(publisher);
-      });
+    //open talk subscription
+    this.openTalk.publisherObs.subscribe(() => {
+      const publisher = this.openTalk.getOT().initPublisher(
+        this.publisher.nativeElement,
+        {
+          insertMode: 'append',
+          width: '100%',
+          height: '100%',
+        },
+        (err) => this.openTalk.handleError(err)
+      );
+      this.openTalk.connect(publisher);
     });
 
     //take photo subscription
@@ -82,11 +77,15 @@ export class VideoCaptureComponent implements OnInit {
         this.calculateRatio()
       );
     });
+
+    //modifyRectangle subscription
+    this.modifyService.selectedModifier.subscribe((option) => {
+      this.incrementGreenSqure(option);
+    });
   }
 
   setRectangleDimensions = () => {
     let videoElem = this.video.nativeElement as HTMLVideoElement;
-    console.log('changed');
     this.rectangleDimensions.width = videoElem.width - 100;
     this.rectangleDimensions.height = videoElem.height - 100;
     this.rectangleDimensions.top = 50;
@@ -96,14 +95,12 @@ export class VideoCaptureComponent implements OnInit {
   getCoordinates(): RelativeCoords {
     var parentPos = this.video.nativeElement.getBoundingClientRect();
     var rectanglePost = this.rectangle.nativeElement.getBoundingClientRect();
-
     var relativePos: RelativeCoords = {
       left: 0,
       top: 0,
       width: 0,
       height: 0,
     };
-
     relativePos.left = rectanglePost.left - parentPos.left;
     relativePos.top = rectanglePost.top - parentPos.top;
     relativePos.width = rectanglePost.width;
@@ -118,7 +115,6 @@ export class VideoCaptureComponent implements OnInit {
   }
 
   incrementGreenSqure(incrementSquareData) {
-    console.log(incrementSquareData);
     switch (incrementSquareData) {
       case 'top': {
         this.rectangleDimensions.height++;

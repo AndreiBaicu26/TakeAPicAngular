@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { TakePhotoService } from '../../services/take-photo.service';
 import { StartCameraService } from '../../services/start-camera.service';
+import { faCamera } from '@fortawesome/free-solid-svg-icons';
+
 @Component({
   selector: 'app-btn-take-photo',
   templateUrl: './btn-take-photo.component.html',
@@ -9,17 +11,18 @@ import { StartCameraService } from '../../services/start-camera.service';
 export class BtnTakePhotoComponent implements OnInit {
   title = 'Take a photo';
   isVisible = false;
-
+  cameraIcon = faCamera;
+  
   constructor(
     public takePhotoService: TakePhotoService,
     private startCameraService: StartCameraService
   ) {}
 
+  ngOnInit(): void {}
+
   changeVisibility(): void {
     this.isVisible = !this.isVisible;
   }
-
-  ngOnInit(): void {}
 
   onCLick(): void {
     if (this.startCameraService.cameraStarted) {

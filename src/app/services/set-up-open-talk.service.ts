@@ -10,12 +10,12 @@ export class SetUpOpenTalkService {
 
   private apiKey = '46883674';
   private sessionId =
-    '1_MX40Njg4MzY3NH5-MTU5NzMzMzk4NjI4MH5jWmppcE10VHdoT0xBMFZRc1dEQU80dkN-fg';
+    '1_MX40Njg4MzY3NH5-MTU5NzY1MTYxMDMwN34xYnpQUWwyOVB2Z0l4akJ3c2hYOVdld1N-fg';
   private token =
-    'T1==cGFydG5lcl9pZD00Njg4MzY3NCZzaWc9MDUzZTdhNzU5ODhhN2VkZDI0MDhjNWVjNTBjYjEyMWYxMTk4ZDI1ZjpzZXNzaW9uX2lkPTFfTVg0ME5qZzRNelkzTkg1LU1UVTVOek16TXprNE5qSTRNSDVqV21wcGNFMTBWSGRvVDB4Qk1GWlJjMWRFUVU4MGRrTi1mZyZjcmVhdGVfdGltZT0xNTk3MzMzOTk1Jm5vbmNlPTAuMjU2Mjk5MjQzMTkzNzEzNDQmcm9sZT1wdWJsaXNoZXImZXhwaXJlX3RpbWU9MTU5NzMzNzU5NCZpbml0aWFsX2xheW91dF9jbGFzc19saXN0PQ==';
+    'T1==cGFydG5lcl9pZD00Njg4MzY3NCZzaWc9MDVjNTE3NWExZTZmMGU1ODNmYjRkNTY5ZmMwYWZhZmQzNmU0MzkyODpzZXNzaW9uX2lkPTFfTVg0ME5qZzRNelkzTkg1LU1UVTVOelkxTVRZeE1ETXdOMzR4WW5wUVVXd3lPVkIyWjBsNGFrSjNjMmhZT1ZkbGQxTi1mZyZjcmVhdGVfdGltZT0xNTk3NjUxNjIyJm5vbmNlPTAuNTM2MjYwMDQyMDQwNjg4MiZyb2xlPXB1Ymxpc2hlciZleHBpcmVfdGltZT0xNTk3NjczMjIyJmluaXRpYWxfbGF5b3V0X2NsYXNzX2xpc3Q9';
   public publisherObs = new Subject<any>();
   public subscriberObs = new Subject<any>();
-  private session;
+  private session: OT.Session;
   private publisher;
 
   getOT() {
@@ -25,6 +25,7 @@ export class SetUpOpenTalkService {
   getSession() {
     return this.session;
   }
+
   public initializeSession() {
     this.session = this.getOT().initSession(this.apiKey, this.sessionId);
     this.publisherObs.next();
@@ -33,19 +34,10 @@ export class SetUpOpenTalkService {
       this.subscriberObs.next({ session: this.session, event });
     });
 
-    // this.session.connect(this.token, (err) => {
-    //   if (err) {
-    //     this.handleError(err);
-    //   } else {
-    //     this.publisherObs.next({session: this.session , OT });
-    //     //session.publish(publisher, this.handleError);
-    //   }
-    // });
   }
 
   public closeSession() {
     this.session.disconnect();
-    this.session.unpublish(this.publisher);
     this.publisher.destroy();
   }
 
@@ -65,17 +57,4 @@ export class SetUpOpenTalkService {
       alert(error.message);
     }
   }
-
-  // session.on("streamCreated", function (event) {
-  //   session.subscribe(
-  //     event.stream,
-  //     "subscriber",
-  //     {
-  //       insertMode: "append",
-  //       width: "100%",
-  //       height: "100%",
-  //     },
-  //     handleError
-  //   );
-  // });
 }

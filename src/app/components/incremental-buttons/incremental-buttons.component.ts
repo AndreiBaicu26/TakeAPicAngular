@@ -1,4 +1,5 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { ModifyGreenRectangleDimensionsService } from '../../services/modify-green-rectangle-dimensions.service';
 
 @Component({
   selector: 'app-incremental-buttons',
@@ -8,23 +9,23 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 export class IncrementalButtonsComponent implements OnInit {
   @Output() increment: EventEmitter<string> = new EventEmitter<string>();
 
-  constructor() {}
+  constructor(private modifyService: ModifyGreenRectangleDimensionsService) {}
 
   ngOnInit(): void {}
 
   incrementTop() {
-    this.increment.emit('top');
+    this.modifyService.modify('top');
   }
 
   incrementBottom() {
-    this.increment.emit('height');
+    this.modifyService.modify('height');
   }
 
   incrementLeft() {
-    this.increment.emit('left');
+    this.modifyService.modify('left');
   }
 
   incrementRight() {
-    this.increment.emit('width');
+    this.modifyService.modify('width');
   }
 }
