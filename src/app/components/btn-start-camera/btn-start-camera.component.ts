@@ -34,7 +34,7 @@ export class BtnStartCameraComponent implements OnInit {
     } else {
       this.setUpOpenTalk.closeSession();
       this.isStarted = false;
-      this.startCameraService.setCameraStarted(false);
+      ///this.startCameraService.setCameraStarted(false);
       if (this.router.url === '/host') {
         this.linkIsVisibleEmitter.emit(false);
       }
